@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 // Validation schema for the form
 const formSchema = z.object({
@@ -103,6 +104,10 @@ export function AuthFormSplitScreen({
 
   return (
     <div className="relative flex min-h-screen w-full flex-col md:flex-row">
+      <div className="absolute right-4 top-4 z-20">
+        <ThemeToggle />
+      </div>
+
       {/* Left Panel: Form */}
       <div className="flex w-full flex-col items-center justify-center bg-background p-8 md:w-1/2">
         <div className="w-full max-w-md">
@@ -241,7 +246,7 @@ export function AuthFormSplitScreen({
           alt={imageAlt}
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
       </div>
     </div>
   );

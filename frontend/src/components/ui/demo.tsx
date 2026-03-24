@@ -26,8 +26,8 @@ export default function AuthFormSplitScreenDemo() {
       }
       title="Welcome back!"
       description="Sign in by entering the information below"
-      imageSrc="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-      imageAlt="Mountain landscape"
+      imageSrc="/login.jpg"
+      imageAlt="Healthcare background"
       onSubmit={handleLogin}
       forgotPasswordHref="#"
       createAccountHref="/signup"

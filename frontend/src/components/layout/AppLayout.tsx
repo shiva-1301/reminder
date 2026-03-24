@@ -11,7 +11,7 @@ export default function AppLayout() {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-gradient-to-br from-slate-50 via-sky-50/30 to-teal-50/20">
+    <div className="flex h-screen w-full overflow-hidden bg-gradient-to-br from-slate-50 via-sky-50/30 to-teal-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <Sidebar
         collapsed={sidebarCollapsed}
         mobileOpen={mobileSidebarOpen}

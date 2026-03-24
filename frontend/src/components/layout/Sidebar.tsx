@@ -49,28 +49,28 @@ export function Sidebar({ collapsed, mobileOpen, onMobileClose }: SidebarProps) 
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-30 flex w-60 flex-col bg-white shadow-xl transition-all duration-300 md:relative md:translate-x-0 md:border-r md:border-sky-100 md:shadow-none ${
+        className={`fixed inset-y-0 left-0 z-30 flex w-60 flex-col bg-white shadow-xl transition-all duration-300 dark:bg-slate-950 md:relative md:translate-x-0 md:border-r md:border-sky-100 md:shadow-none dark:md:border-slate-800 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         } ${
           collapsed ? "md:w-[72px]" : "md:w-[240px]"
         }`}
       >
         {/* Logo */}
-        <div className={`flex items-center justify-between border-b border-sky-100 py-5 ${collapsed ? "px-3 md:px-4" : "px-6"}`}>
+        <div className={`flex items-center justify-between border-b border-sky-100 py-5 dark:border-slate-800 ${collapsed ? "px-3 md:px-4" : "px-6"}`}>
           <div className="flex items-center gap-3 overflow-hidden">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-teal-500 shadow-md shadow-sky-200">
               <HeartPulse className="h-5 w-5 text-white" />
             </div>
             <span
-              className={`text-lg font-extrabold tracking-tight text-slate-800 transition-all duration-300 ${
+              className={`text-lg font-extrabold tracking-tight text-slate-800 transition-all duration-300 dark:text-slate-100 ${
                 collapsed ? "md:w-0 md:opacity-0" : "md:w-auto md:opacity-100"
               }`}
             >
               Med<span className="text-sky-500">Rem</span>
             </span>
           </div>
-          <button onClick={onMobileClose} className="rounded-lg p-1 hover:bg-slate-100 md:hidden">
-            <X className="h-5 w-5 text-slate-500" />
+          <button onClick={onMobileClose} className="rounded-lg p-1 hover:bg-slate-100 dark:hover:bg-slate-800 md:hidden">
+            <X className="h-5 w-5 text-slate-500 dark:text-slate-300" />
           </button>
         </div>
 
@@ -87,8 +87,8 @@ export function Sidebar({ collapsed, mobileOpen, onMobileClose }: SidebarProps) 
                       collapsed ? "justify-center px-2" : "gap-3 px-4"
                     } ${
                       isActive
-                        ? "bg-gradient-to-r from-sky-50 to-teal-50 text-sky-700 shadow-sm"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                        ? "bg-gradient-to-r from-sky-50 to-teal-50 text-sky-700 shadow-sm dark:from-slate-800 dark:to-slate-800 dark:text-sky-300"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
                     }`
                   }
                 >
@@ -107,10 +107,10 @@ export function Sidebar({ collapsed, mobileOpen, onMobileClose }: SidebarProps) 
         </nav>
 
         {/* Logout */}
-        <div className={`border-t border-sky-100 py-4 ${collapsed ? "px-2" : "px-4"}`}>
+        <div className={`border-t border-sky-100 py-4 dark:border-slate-800 ${collapsed ? "px-2" : "px-4"}`}>
           <button
             onClick={handleLogout}
-            className={`flex w-full items-center rounded-xl py-2.5 text-sm font-medium text-red-500 transition-all duration-300 hover:bg-red-50 ${
+            className={`flex w-full items-center rounded-xl py-2.5 text-sm font-medium text-red-500 transition-all duration-300 hover:bg-red-50 dark:hover:bg-red-950/40 ${
               collapsed ? "justify-center px-2" : "gap-3 px-4"
             }`}
           >
