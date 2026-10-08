@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,5 +20,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    // Never serialise the password hash back to clients
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 }

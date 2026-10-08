@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/alerts")
 @RequiredArgsConstructor
-@CrossOrigin
 public class SafetyAlertController {
 
     private final SafetyAlertService safetyAlertService;

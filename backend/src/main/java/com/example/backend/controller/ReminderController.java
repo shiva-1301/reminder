@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/reminders")
 @RequiredArgsConstructor
-@CrossOrigin
 public class ReminderController {
 
     private final ReminderService reminderService;

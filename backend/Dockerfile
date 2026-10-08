@@ -26,5 +26,6 @@ COPY --from=build /app/target/*.jar app.jar
 # Expose port (Render assigns dynamically)
 EXPOSE 8080
 
-# Run the application with Render's PORT environment variable
-ENTRYPOINT ["java", "-Dserver.port=${PORT:-8080}", "-jar", "app.jar"]
+# server.port reads Render's PORT env var (see application.properties).
+# Exec-form ENTRYPOINT does not expand ${PORT}, so it must not be passed here.
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "app.jar"]
