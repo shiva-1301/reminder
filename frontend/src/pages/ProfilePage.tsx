@@ -1,10 +1,11 @@
+import { getUser } from "@/lib/auth";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { User, Mail, Droplets, CalendarDays, Stethoscope, Phone, BookOpen, Save, Pencil } from "lucide-react";
 
 const defaultProfile = {
   name: "Alex Johnson",
-  email: localStorage.getItem("user") ?? "alex@example.com",
+  email: getUser() ?? "alex@example.com",
   age: "32",
   bloodGroup: "O+",
   medicalHistory: "Hypertension, Type-2 Diabetes",

@@ -1,36 +1,33 @@
 /**
- * Get the API base URL based on environment
- * Uses VITE_API_BASE_URL environment variable in production
- * Falls back to localhost:8080 for development
+ * Base URL of the Spring Boot backend.
+ * Set VITE_API_BASE_URL in .env.local (dev) or in your hosting provider (prod).
  */
-export const getApiUrl = () => {
-  return import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
-};
+export const getApiUrl = (): string =>
+  (import.meta.env.VITE_API_BASE_URL || "http://localhost:8080").replace(/\/+$/, "");
 
 /**
- * Make an API request with proper error handling
+ * Make an API request. Returns parsed JSON when possible, otherwise raw text
+ * (the auth endpoints respond with plain strings).
  */
-export const apiCall = async (endpoint, options = {}) => {
-  const apiUrl = getApiUrl();
-  const url = `${apiUrl}${endpoint}`;
-
+export const apiCall = async <T = unknown>(endpoint: string, options: RequestInit = {}): Promise<T> => {
+  const { headers, ...rest } = options;
+  let response: Response;
   try {
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      ...options,
+    response = await fetch(`${getApiUrl()}${endpoint}`, {
+      ...rest,
+      headers: { "Content-Type": "application/json", ...(headers || {}) },
     });
+  } catch {
+    throw new Error("Could not reach the server. Check your connection and try again.");
+  }
 
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
-    }
-
-    const text = await response.text();
-    return text ? JSON.parse(text) : text;
-  } catch (error) {
-    console.error('API call failed:', error);
-    throw error;
+  const text = await response.text();
+  if (!response.ok) {
+    throw new Error(text || `Request failed (${response.status})`);
+  }
+  try {
+    return (text ? JSON.parse(text) : text) as T;
+  } catch {
+    return text as unknown as T;
   }
 };

@@ -1,3 +1,4 @@
+import { getUser } from "@/lib/auth";
 import { motion } from "framer-motion";
 import {
   FileText,
@@ -58,7 +59,7 @@ const item = {
 };
 
 export default function DashboardPage() {
-  const userEmail = localStorage.getItem("user") ?? "User";
+  const userEmail = getUser() ?? "User";
   const userName = userEmail.split("@")[0];
 
   return (

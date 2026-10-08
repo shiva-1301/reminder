@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, Bell, ChevronDown, HeartPulse, LogOut, User, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { clearUser, getUser } from "@/lib/auth";
 
 interface NavbarProps {
   sidebarCollapsed: boolean;
@@ -11,11 +12,27 @@ interface NavbarProps {
 
 export function Navbar({ sidebarCollapsed, onMobileMenuClick, onDesktopToggle }: NavbarProps) {
   const navigate = useNavigate();
-  const userEmail = localStorage.getItem("user") ?? "User";
+  const userEmail = getUser() ?? "User";
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close the profile menu on outside click or Escape
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    const onClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setDropdownOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setDropdownOpen(false);
+    document.addEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [dropdownOpen]);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    clearUser();
     navigate("/login");
   };
 
@@ -27,11 +44,13 @@ export function Navbar({ sidebarCollapsed, onMobileMenuClick, onDesktopToggle }:
           onClick={onDesktopToggle}
           className="hidden rounded-xl p-2 text-slate-500 transition-colors hover:bg-sky-50 dark:text-slate-300 dark:hover:bg-slate-800 md:inline-flex"
           title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {sidebarCollapsed ? <PanelLeftOpen className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
         </button>
         <button
           onClick={onMobileMenuClick}
+          aria-label="Open navigation menu"
           className="rounded-xl p-2 text-slate-500 hover:bg-sky-50 dark:text-slate-300 dark:hover:bg-slate-800 md:hidden"
         >
           <Menu className="h-5 w-5" />
@@ -55,15 +74,22 @@ export function Navbar({ sidebarCollapsed, onMobileMenuClick, onDesktopToggle }:
         <ThemeToggle />
 
         {/* Notification bell */}
-        <button className="relative rounded-xl p-2 text-slate-500 hover:bg-sky-50 dark:text-slate-300 dark:hover:bg-slate-800">
+        <button
+          onClick={() => navigate("/alerts")}
+          aria-label="View safety alerts"
+          title="Safety alerts"
+          className="relative rounded-xl p-2 text-slate-500 hover:bg-sky-50 dark:text-slate-300 dark:hover:bg-slate-800">
           <Bell className="h-5 w-5" />
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
         </button>
 
         {/* Profile dropdown */}
-        <div className="relative">
+        <div className="relative" ref={menuRef}>
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
+            aria-haspopup="menu"
+            aria-expanded={dropdownOpen}
+            aria-label="Account menu"
             className="flex items-center gap-2 rounded-xl px-3 py-2 hover:bg-sky-50 dark:hover:bg-slate-800"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-teal-400 text-xs font-bold text-white shadow-md">
@@ -76,7 +102,7 @@ export function Navbar({ sidebarCollapsed, onMobileMenuClick, onDesktopToggle }:
           </button>
 
           {dropdownOpen && (
-            <div className="absolute right-0 top-12 w-48 rounded-2xl border border-sky-100 bg-white py-2 shadow-xl dark:border-slate-800 dark:bg-slate-900">
+            <div role="menu" className="absolute right-0 top-12 z-30 w-56 rounded-2xl border border-sky-100 bg-white py-2 shadow-xl dark:border-slate-800 dark:bg-slate-900">
               <button
                 onClick={() => { navigate("/profile"); setDropdownOpen(false); }}
                 className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-sky-50 dark:text-slate-200 dark:hover:bg-slate-800"

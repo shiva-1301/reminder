@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Upload, Eye, Trash2, CalendarDays, CloudUpload } from "lucide-react";
+import { FileText, Eye, Trash2, CalendarDays, CloudUpload } from "lucide-react";
 
 interface Prescription {
   id: number;

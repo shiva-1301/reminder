@@ -12,6 +12,7 @@ import {
   HeartPulse,
   X,
 } from "lucide-react";
+import { clearUser } from "@/lib/auth";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -34,7 +35,7 @@ export function Sidebar({ collapsed, mobileOpen, onMobileClose }: SidebarProps) 
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    clearUser();
     navigate("/login");
   };
 
@@ -45,6 +46,7 @@ export function Sidebar({ collapsed, mobileOpen, onMobileClose }: SidebarProps) 
         <div
           className="fixed inset-0 z-20 bg-black/30 backdrop-blur-sm md:hidden"
           onClick={onMobileClose}
+          aria-hidden="true"
         />
       )}
 
@@ -69,19 +71,20 @@ export function Sidebar({ collapsed, mobileOpen, onMobileClose }: SidebarProps) 
               Med<span className="text-sky-500">Rem</span>
             </span>
           </div>
-          <button onClick={onMobileClose} className="rounded-lg p-1 hover:bg-slate-100 dark:hover:bg-slate-800 md:hidden">
+          <button onClick={onMobileClose} aria-label="Close navigation menu" className="rounded-lg p-1 hover:bg-slate-100 dark:hover:bg-slate-800 md:hidden">
             <X className="h-5 w-5 text-slate-500 dark:text-slate-300" />
           </button>
         </div>
 
         {/* Nav */}
-        <nav className={`flex-1 overflow-y-auto py-6 ${collapsed ? "px-2" : "px-4"}`}>
+        <nav aria-label="Main navigation" className={`flex-1 overflow-y-auto py-6 ${collapsed ? "px-2" : "px-4"}`}>
           <ul className="space-y-1">
             {navItems.map(({ to, icon: Icon, label }) => (
               <li key={to}>
                 <NavLink
                   to={to}
                   onClick={onMobileClose}
+                  title={collapsed ? label : undefined}
                   className={({ isActive }) =>
                     `flex items-center rounded-xl py-2.5 text-sm font-medium transition-all duration-300 ${
                       collapsed ? "justify-center px-2" : "gap-3 px-4"
