@@ -86,11 +86,9 @@ Core fields:
 - Note: current implementation stores uploaded prescription metadata (URL + timestamp). File binary upload endpoint is not added yet.
 
 ## 2. Frontend API Calls in Use
-The frontend calls the backend auth endpoints using `fetch` in the following files:
-- `frontend/src/components/ui/demo.tsx` -> login API
-- `frontend/src/components/ui/sign-up-page.tsx` -> register API
-- `frontend/src/Login.jsx` -> login API
-- `frontend/src/Register.jsx` -> register API
+The frontend calls the backend through the shared helper `frontend/src/lib/api.ts`:
+- `frontend/src/pages/LoginPage.tsx` -> login API
+- `frontend/src/pages/SignupPage.tsx` -> register API
 
 Dashboard module pages still use dummy frontend state right now and are not yet wired to the new backend module APIs.
 
@@ -100,9 +98,9 @@ Dashboard module pages still use dummy frontend state right now and are not yet 
 - Connection used via JDBC in backend config
 - Not a frontend HTTP API, but an external data service used by backend
 
-### 3.2 External Image URLs
-- Unsplash image URL is used in UI components for visuals
-- This is a static content URL usage, not application business API integration
+### 3.2 External Assets
+- Google Fonts (Inter) is loaded in `frontend/index.html`
+- All images are served locally from `frontend/public/`
 
 ## 4. APIs Not Yet Implemented (Current State)
 The following are still pending:
@@ -111,6 +109,7 @@ The following are still pending:
 
 ## 5. Notes
 - Auth API responses are plain strings (not JSON objects).
-- CORS is enabled on auth controller (`@CrossOrigin`).
+- CORS is configured globally in `SecurityConfig` from the `ALLOWED_ORIGINS` env var.
+- Login returns `401` and register returns `400` on failure (plain-text message body).
 - Current backend stack indicates relational DB usage (JPA + PostgreSQL), not MongoDB.
 - Newly added module APIs return JSON entities and use standard HTTP codes (`200`, `201`-style via POST response body, `204`, `404`).
